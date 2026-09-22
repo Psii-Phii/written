@@ -1,0 +1,9 @@
+__pycache__/
+*.egg-info/
+*_tex/
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+.pytest_cache/
