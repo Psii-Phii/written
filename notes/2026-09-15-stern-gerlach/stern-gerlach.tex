@@ -1,54 +1,84 @@
-\documentclass[11pt]{article}
-\usepackage[margin=1in]{geometry}
+\documentclass[12pt]{article}
+\usepackage[a4paper, top=1in, bottom=1in, left=1.1in, right=1.1in, headheight=15pt]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage{amsmath,amssymb,amsthm,mathtools,braket,enumitem,graphicx,tikz,hyperref}
-\usetikzlibrary{arrows.meta,calc,positioning,shapes.geometric,decorations.pathmorphing}
+\usepackage{amsmath,amssymb,amsthm,mathtools,braket,enumitem,graphicx,tikz}
+
+\usepackage{fancyhdr,titlesec,hyperref}
+\usetikzlibrary{arrows.meta,calc,positioning,shapes.geometric}
 \hypersetup{colorlinks=true, linkcolor=blue!50!black, urlcolor=blue!50!black}
 
+% ---- headers / footers ------------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\small\textsc{Quantum Optics}}
+\rhead{\small\nouppercase{\leftmark}}
+\cfoot{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancypagestyle{plain}{\fancyhf{}\cfoot{\small\thepage}\renewcommand{\headrulewidth}{0pt}}
+
+% ---- section headings -------------------------------------------------------
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.8em}{}
+\titlespacing*{\section}{0pt}{2.2ex plus 0.6ex minus 0.2ex}{1.2ex plus 0.2ex}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.8em}{}
+\titlespacing*{\subsection}{0pt}{1.8ex plus 0.5ex minus 0.2ex}{0.9ex plus 0.2ex}
+
+% ---- theorem-like environments ---------------------------------------------
+\theoremstyle{plain}
+\newtheorem*{proposition*}{Proposition}
+\newtheorem*{corollary*}{Corollary}
+\theoremstyle{remark}
+\newtheorem*{observation}{Observation}
+\newtheorem*{note}{Note}
+
+\newcommand{\I}{\mathbf{1}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
 \newcommand{\vecb}[1]{\vec{#1}}
 \newcommand{\hbf}[1]{\hat{#1}}
-\newcommand{\mubohr}{\mu_B}
+\newcommand{\Om}{\vecb{\Omega}}
+\newcommand{\sig}{\vecb{\sigma}}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\Real}{Re}
+\DeclareMathOperator{\Imag}{Im}
+\setlist[itemize]{itemsep=2pt, topsep=4pt}
 
-\title{Quantum Optics --- Lecture 2\\ \large Two-level atomic systems: Stern--Gerlach and spin $\tfrac12$}
-\author{Transcribed from handwritten notes (Note Sep 15, 2026, pp.\,3--7)}
+\title{\vspace{-1.5em}Quantum Optics --- Lecture 2\\[0.3em]
+       \large Two-level atomic systems}
+\author{Notes of 15 September 2026}
 \date{}
 
 \begin{document}
 \maketitle
+\thispagestyle{plain}
 
-\section*{Two level atomic systems}
+% =============================================================================
+\section{Two level atomic systems}
 
-\subsection*{Stern--Gerlach + Spin $\tfrac12$}
+\subsection{Stern--Gerlach and spin $\tfrac12$}
 
 \[
-  \braket{\vecb{\mu}} = -g\,\mubohr \Braket{\frac{\vecb{J}}{\hbar}}
+  \braket{\vecb{\mu}} = -g\,\mu_B \Braket{\frac{\vecb{J}}{\hbar}}
 \]
 
 \begin{center}
 \begin{tikzpicture}[>=Stealth, scale=1.1]
-  % oven / incoming beam
   \node[draw, minimum width=0.7cm, minimum height=0.5cm] (oven) at (-3.2,0) {};
   \draw[->, thick] (oven.east) -- (-2.0,0);
-  % collimating slit
   \draw[thick] (-1.7,0.9) -- (-1.7,0.25);
   \draw[thick] (-1.7,-0.25) -- (-1.7,-0.9);
-  % magnet poles (N on top, S below), inhomogeneous field along z
   \draw[thick] (-0.9,1.3) -- (-0.9,0.55) -- (0.9,0.55) -- (0.9,1.3);
   \draw[thick] (-0.9,0.35) -- (-0.9,-0.1) -- (0.9,-0.1) -- (0.9,-1.3);
   \draw[thick] (-0.9,-0.1) -- (-0.9,-1.3);
   \draw[->, blue, thick] (0,-1.1) -- (0,1.1);
   \node at (1.25,0.95) {$\hbf{z}\uparrow$};
-  % beam and split
   \draw[thick] (-1.7,0) -- (-0.2,0);
   \draw[thick] (-0.2,0) .. controls (1.2,0.05) and (2.2,1.1) .. (3.2,1.4);
   \draw[thick] (-0.2,0) .. controls (1.2,-0.05) and (2.2,-1.1) .. (3.2,-1.4);
-  % detection plate
   \draw[very thick] (3.2,1.8) -- (3.2,-1.8);
   \fill (3.2,1.4) circle (2pt) node[right] {$N_1$};
   \fill (3.2,-1.4) circle (2pt) node[right] {$N_2$};
   \node[below] at (3.2,-1.8) {$P$};
-  % force
   \node at (5.6,0.6) {$\vecb{F} = \nabla \mu_z B_z$};
 \end{tikzpicture}
 \end{center}
@@ -72,9 +102,9 @@ Interaction energy of the magnetic moment with the magnetic field is just $-\vec
 \[
   \vecb{E} = E_0\,\hbf{x}\cos(kz - \omega t)
 \]
-Likewise we may consider $y$-polarized light, also propagating in the $z$-direction
+Likewise we may consider $y$-polarized light, also propagating in the $z$-direction,
 \[
-  \vecb{E} = E_0\,\hbf{y}\cos(kz - \omega t)
+  \vecb{E} = E_0\,\hbf{y}\cos(kz - \omega t) .
 \]
 
 Then we have that
@@ -101,17 +131,17 @@ but
 \end{tikzpicture}
 \end{center}
 
-\subsection*{Constructing spin operators from sequential SG experiments}
+\subsection{Constructing spin operators from sequential SG experiments}
 
 We know we can write
 \[
-  S_z = \frac{\hbar}{2}\Bigl[\ket{+}\bra{+} - \ket{-}\bra{-}\Bigr]
+  S_z = \frac{\hbar}{2}\Bigl[\ket{+}\bra{+} - \ket{-}\bra{-}\Bigr] .
 \]
 
 Classically a current loop has the magnetic moment
 \begin{align*}
   \mu = \frac{IA}{c} &= \frac{qA}{Tc} = \frac{qvA}{2\pi r\, c} = \frac{qv\,\pi r^2}{2\pi r\, c} \\
-  &= \frac{qv}{2c}\, r = \frac{q}{2mc}\, m v r = \frac{q}{2mc}\, L
+  &= \frac{qv}{2c}\, r = \frac{q}{2mc}\, m v r = \frac{q}{2mc}\, L ,
 \end{align*}
 so
 \[
@@ -119,26 +149,25 @@ so
 \]
 For spin $\displaystyle \mu = g\,\frac{q}{2mc}\, S$; $g = 1 \Rightarrow$ classical orbital value. Dirac says $g = 2$:
 \[
-  \mu = \frac{q}{mc}\, S .
-\]
-\[
-  |S_z| = \frac{m_e c}{e}\,|\mu_z|, \qquad \mu_z = \frac{e\hbar}{2 m_e c}\ \text{(exp.)} \quad \Rightarrow\quad S_z = \frac{\hbar}{2}.
+  \mu = \frac{q}{mc}\, S , \qquad
+  |S_z| = \frac{m_e c}{e}\,|\mu_z|, \quad \mu_z = \frac{e\hbar}{2 m_e c}\ \text{(exp.)} \quad\Rightarrow\quad S_z = \frac{\hbar}{2} .
 \]
 
 We have that
 \[
-  \boxed{\, S_z = \frac{\hbar}{2}\Bigl[\ket{+}\bra{+} - \ket{-}\bra{-}\Bigr] \,}
+  \boxed{\; S_z = \frac{\hbar}{2}\Bigl[\ket{+}\bra{+} - \ket{-}\bra{-}\Bigr] \;}
 \]
 
-\paragraph{Obs:} the $S_x+$ beam splits 50/50 in SG$\hbf{z}$, so we require that
+\begin{observation}
+The $S_x+$ beam splits 50/50 in SG$\hbf{z}$, so we require that
 \[
-  \bigl|\braket{+|S_x;+}\bigr|^2 = \bigl|\braket{-|S_x;-}\bigr|^2 = \frac12
+  \bigl|\braket{+|S_x;+}\bigr|^2 = \bigl|\braket{-|S_x;+}\bigr|^2 = \frac12 ,
 \]
 but it also must be the case that
 \[
-  \ket{S_x;+} = c_1\ket{+} + c_2\ket{-} ,
+  \ket{S_x;+} = c_1\ket{+} + c_2\ket{-} .
 \]
-thus combining the two and taking into account an unphysical phase we have that
+Thus combining the two and taking into account an unphysical phase we have that
 \[
   \ket{S_x;+} = \frac{1}{\sqrt2}\ket{+} + \frac{e^{i\delta_1}}{\sqrt2}\ket{-} .
 \]
@@ -146,14 +175,18 @@ Then since $\ket{S_x;-}$ is necessarily orthogonal to $\ket{S_x;+}$ we have that
 \[
   \ket{S_x;-} = \frac{1}{\sqrt2}\ket{+} - \frac{e^{i\delta_1}}{\sqrt2}\ket{-} .
 \]
+\end{observation}
 
-\paragraph{Obs:} $S_y+$ also splits in SG$x$, so
+\begin{observation}
+$S_y+$ also splits in SG$x$, so
 \begin{align*}
-  \braket{S_y;+|S_x;+} &= \frac12\bigl(1 + e^{i(\delta_1-\delta_2)}\bigr) \\
-  \bigl|\braket{S_y;+|S_x;-}\bigr|^2 &= \frac14\bigl|1 + e^{i(\delta_1-\delta_2)}\bigr|^2
+  \braket{S_y;+|S_x;+} &= \frac12\bigl(1 + e^{i(\delta_1-\delta_2)}\bigr) , \\
+  \bigl|\braket{S_y;+|S_x;+}\bigr|^2 &= \frac14\bigl|1 + e^{i(\delta_1-\delta_2)}\bigr|^2
     = \frac12\bigl(1 + \cos(\delta_1-\delta_2)\bigr) = \frac12 \\
-  &\iff \cos(\delta_1-\delta_2) = 0 \iff \delta_2 - \delta_1 = \pm\frac{\pi}{2}
+  &\iff \cos(\delta_1-\delta_2) = 0 \iff \delta_2 - \delta_1 = \pm\frac{\pi}{2} .
 \end{align*}
+\end{observation}
+
 Let $\delta = \dfrac{\pi}{2}$, so
 \[
   \ket{S_x;\pm} = \frac{1}{\sqrt2}\bigl(\ket{+} \pm \ket{-}\bigr)
@@ -162,9 +195,234 @@ Let $\delta = \dfrac{\pi}{2}$, so
 \]
 So
 \begin{align*}
-  S_x &= \frac{\hbar}{2}\Bigl(\ket{S_x;+}\bra{S_x;+} - \ket{S_x;-}\bra{S_x;-}\Bigr) \\
-      &= \frac{\hbar}{2}\Bigl(\ket{+}\bra{-} + \ket{-}\bra{+}\Bigr) \\[4pt]
+  S_x &= \frac{\hbar}{2}\Bigl(\ket{S_x;+}\bra{S_x;+} - \ket{S_x;-}\bra{S_x;-}\Bigr)
+       = \frac{\hbar}{2}\Bigl(\ket{+}\bra{-} + \ket{-}\bra{+}\Bigr) , \\[4pt]
   S_y &= \frac{\hbar}{2}\Bigl(-i\ket{+}\bra{-} + i\ket{-}\bra{+}\Bigr) .
 \end{align*}
+
+% =============================================================================
+\section{General two level systems}
+
+A quantum system whose Hilbert space is exactly $\C^2$. They have two basis states denoted by
+\[
+  \ket{\uparrow} = \ket{0} = \begin{bmatrix} 1 \\ 0 \end{bmatrix}
+  \qquad\text{and}\qquad
+  \ket{\downarrow} = \ket{1} = \begin{bmatrix} 0 \\ 1 \end{bmatrix} .
+\]
+The general state is
+\[
+  \ket{\psi} = c_0\ket{0} + c_1\ket{1}, \qquad |c_0|^2 + |c_1|^2 = 1, \qquad c_0, c_1 \in \C
+\]
+$\Rightarrow$ 4 real numbers, $-1$ for normalization, $-1$ for global phase $\Rightarrow$ 2 independent real parameters.
+
+\subsection{Pauli matrices}
+
+\[
+  \sigma_x = \begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix}, \qquad
+  \sigma_y = \begin{bmatrix} 0 & -i \\ i & 0 \end{bmatrix}, \qquad
+  \sigma_z = \begin{bmatrix} 1 & 0 \\ 0 & -1 \end{bmatrix}
+\]
+\[
+  \sigma_i^2 = 1, \qquad
+  \sigma_i\sigma_j = \delta_{ij}\I + i\epsilon_{ijk}\sigma_k, \qquad
+  [\sigma_i, \sigma_j] = 2i\epsilon_{ijk}\sigma_k, \qquad
+  \{\sigma_i, \sigma_j\} = 2\delta_{ij}\I
+\]
+
+Observe
+\begin{align*}
+  \hat\sigma   &= \ket{g}\bra{e} = \tfrac12(\sigma_x + i\sigma_y) \\
+  \hat\sigma^\dagger &= \ket{e}\bra{g} = \tfrac12(\sigma_x - i\sigma_y)
+\end{align*}
+$\Rightarrow \hat\sigma + \hat\sigma^\dagger = \sigma_x$, and
+\[
+  \ket{e}\bra{e} = \tfrac12\bigl(\I + \sigma_z\bigr) .
+\]
+
+\begin{proposition*}
+$\{\I, \sigma_x, \sigma_y, \sigma_z\}$ is a basis for all $2\times2$ matrices.
+\end{proposition*}
+\begin{proof}
+Any Hermitian matrix $H$ can be written as
+\[
+  H = \begin{pmatrix} a & c - id \\ c + id & b \end{pmatrix}
+    = \frac{a+b}{2}\,\I + c\,\sigma_x + d\,\sigma_y + \frac{a-b}{2}\,\sigma_z . \qedhere
+\]
+\end{proof}
+
+We can therefore write every 2-level Hamiltonian as
+\[
+  \boxed{\; \hat H = E_0\,\I + \frac{\hbar}{2}\,\Om\cdot\sig \;}
+\]
+for some $E_0 \in \R$.
+
+\begin{note}
+Suppose $H = a\I + b\sigma_x + c\sigma_y + d\sigma_z$, then
+\[
+  H = \begin{bmatrix} H_{00} & H_{01} \\ H_{01}^* & H_{11} \end{bmatrix}
+  \quad\Rightarrow\quad
+  a = \frac{H_{00} + H_{11}}{2}, \quad b = \Real H_{01}, \quad c = -\Imag H_{01}, \quad d = \frac{H_{00} - H_{11}}{2} ,
+\]
+or using $\braket{A, B} = \tfrac12 \Tr(AB)$ we have
+\[
+  a = \tfrac12\Tr(H), \qquad b = \tfrac12\Tr(H\sigma_x), \qquad \text{etc.}
+\]
+So from this
+\[
+  \Om = \frac{2}{\hbar}\,(b, c, d), \qquad E_0 = a ,
+\]
+\begin{itemize}
+  \item $\hbar\Omega_z = H_{00} - H_{11}$ \quad (energy splitting),
+  \item $\hbar\Omega_x = 2\Real H_{01}$,
+  \item $\hbar\Omega_y = -2\Imag H_{01}$ \quad (coupling, magnitude and phase).
+\end{itemize}
+\end{note}
+
+\subsection{Eigenvalues of a general 2-level Hamiltonian $\hat H$}
+
+We can make use of the Pauli identities to find the energy levels of any 2-level $\hat H$. Start by
+\[
+  \Om\cdot\sig = \Omega_x\sigma_x + \Omega_y\sigma_y + \Omega_z\sigma_z = \Omega_i\sigma_i .
+\]
+Then
+\[
+  (\Om\cdot\sig)^2 = \Omega_i\sigma_i\,\Omega_j\sigma_j = \Omega_i\Omega_j\,\sigma_i\sigma_j
+\]
+since $\Omega_i, \Omega_j$ are scalars. And then using $\sigma_i\sigma_j = \delta_{ij}\I + i\epsilon_{ijk}\sigma_k$ we have
+\begin{align*}
+  (\Om\cdot\sig)^2 &= \Omega_i\Omega_j\,\delta_{ij}\,\I + \underbrace{i\,\Omega_i\Omega_j\,\epsilon_{ijk}\sigma_k}_{=\,0} \\
+                   &= \Omega_i\Omega_i + 0 = |\Omega|^2 ,
+\end{align*}
+where the second term vanishes because
+\[
+  i\,\Omega_i\Omega_j\,\epsilon_{ijk}\sigma_k = i\,\Omega_j\Omega_i\,\epsilon_{ijk}\sigma_k
+  = i\,\Omega_i\Omega_j\,(-\epsilon_{ijk})\sigma_k = 0 .
+\]
+Thus
+\[
+  \boxed{\; (\Om\cdot\sig)^2 = |\Omega|^2\,\I \;}
+\]
+
+Let $M = \Om\cdot\sig$ and if $\ket{v}$ is an eigenvector with eigenvalue $\lambda$ we have that
+\begin{align*}
+  M\ket{v} = \lambda\ket{v}
+  &\;\Rightarrow\; M^2\ket{v} = \lambda M\ket{v} = \lambda^2\ket{v} , \\
+  \text{but } M^2 = |\Omega|^2\I
+  &\;\Rightarrow\; M^2\ket{v} = |\Omega|^2\,\I\ket{v} = \lambda^2\,\I\ket{v} \\
+  &\iff |\Omega|^2 = \lambda^2 \iff \boxed{\lambda = \pm|\Omega|} .
+\end{align*}
+Furthermore we have that $\lambda^2 \geq 0$, $\lambda \in \R$. And
+\[
+  \Tr(\Om\cdot\sig) = \Omega_i\Tr(\sigma_i) = 0 = \lambda_1 + \lambda_2 \iff \lambda_1 = -\lambda_2 ,
+\]
+consistent with our $\lambda$ values.
+
+Then for the two possible energy levels we have
+\[
+  \hat H\ket{\pm} = \Bigl(E_0 \pm \frac{\hbar}{2}|\Om|\Bigr)\ket{\pm}
+  \iff E_\pm = E_0 \pm \frac{\hbar}{2}|\Om| ,
+\]
+\[
+  \boxed{\; E_+ - E_- = \hbar\,|\Om| \;}
+\]
+
+\begin{corollary*}
+For a unit vector $\hbf{n}$ we have
+\[
+  e^{-i\frac{\theta}{2}\hbf{n}\cdot\sig} = \cos\Bigl(\frac{\theta}{2}\Bigr)\I - i\sin\Bigl(\frac{\theta}{2}\Bigr)(\hbf{n}\cdot\sig) .
+\]
+\end{corollary*}
+\begin{proof}
+We have that
+\[
+  e^A = \sum_{n=0}^{\infty}\frac{A^n}{n!} ,
+  \qquad\text{then let}\qquad
+  A = -i\frac{\theta}{2}\,\underbrace{\hbf{n}\cdot\sig}_{M} = -i\frac{\theta}{2}\,M .
+\]
+Observe $M^0 = 1$, $M^1 = M$, $M^2 = \I$, $M^3 = M^2 M = M$, $M^4 = M^3 M = M^2 = \I$, $M^5 = M^4 M = M$, \dots; from this
+\[
+  n \text{ odd} \Rightarrow M^n = M, \qquad n \text{ even} \Rightarrow M^n = \I .
+\]
+Then
+\begin{align*}
+  e^{\left(-\frac{i\theta}{2}\right)M}
+  &= \sum_{n=0}^{\infty}\Bigl(-\frac{i\theta}{2}\Bigr)^n \frac{1}{n!}\,M^n \\
+  &= \sum_{n\ \text{even}}\Bigl(-\frac{i\theta}{2}\Bigr)^n \frac{1}{n!}\,\underbrace{M^n}_{\I}
+   + \sum_{n\ \text{odd}}\Bigl(-\frac{i\theta}{2}\Bigr)^n \frac{1}{n!}\,\underbrace{M^n}_{M} \\
+  &= \sum_{k=0}^{\infty}\Bigl(-\frac{i\theta}{2}\Bigr)^{2k}\frac{1}{(2k)!}
+   + \sum_{k=0}^{\infty}\Bigl(-\frac{i\theta}{2}\Bigr)^{2k+1}\frac{M}{(2k+1)!} \\
+  &= \sum_{k=0}^{\infty}(-1)^k\Bigl(\frac{\theta}{2}\Bigr)^{2k}\frac{1}{(2k)!}
+   \;-\; i\sum_{k=0}^{\infty}(-1)^k\Bigl(\frac{\theta}{2}\Bigr)^{2k+1}\frac{1}{(2k+1)!}\,M \\
+  &= \cos\Bigl(\frac{\theta}{2}\Bigr)\I - i\sin\Bigl(\frac{\theta}{2}\Bigr)M . \qedhere
+\end{align*}
+\end{proof}
+
+Thus we have that
+\[
+  e^{-i\frac{\theta}{2}\hbf{n}\cdot\sig} = \cos\Bigl(\frac{\theta}{2}\Bigr)\I - i\sin\Bigl(\frac{\theta}{2}\Bigr)\hbf{n}\cdot\sig .
+\]
+For
+\[
+  \hat U(t) = e^{-i\hat H t/\hbar} = e^{-iE_0 t/\hbar}\, e^{-i\frac{|\Om|}{2} t\,\hbf{n}\cdot\sig} ,
+  \qquad\text{where}\quad \hat H = E_0\I + \frac{\hbar}{2}\Om\cdot\sig, \quad \Om = |\Om|\,\hbf{n} ,
+\]
+\[
+  e^{-i\frac{|\Om|}{2} t\,\hbf{n}\cdot\sig} \;\hookrightarrow\; \text{rotation of the Bloch vector by } \theta .
+\]
+\begin{itemize}
+  \item $e^{-i\frac{\pi}{2}\sigma_x} = -i\sigma_x$, \quad $-i\sigma_x\ket{g} = -i\ket{e}$ \quad ($\pi$-pulse about $x$).
+\end{itemize}
+
+\subsection{The general form of a state}
+
+\[
+  \ket{\psi} = c_0\ket{0} + c_1\ket{1}, \qquad c_0, c_1 \in \C, \qquad |c_0|^2 + |c_1|^2 = 1 .
+\]
+Let $c_0 = r_0 e^{i\alpha_0}$, $c_1 = r_1 e^{i\alpha_1}$; then
+\[
+  |c_0|^2 + |c_1|^2 = r_0^2 + r_1^2 = 1, \qquad r_0, r_1 \geq 0
+  \quad\Rightarrow\quad
+  r_0 = \cos\Bigl(\frac{\theta}{2}\Bigr), \quad r_1 = \sin\Bigl(\frac{\theta}{2}\Bigr), \quad \theta \in [0, \pi] .
+\]
+\begin{center}
+\begin{tikzpicture}[>=Stealth, scale=0.9]
+  \draw[->] (-1.4,0) -- (1.6,0) node[below] {$r_0$};
+  \draw[->] (0,-1.4) -- (0,1.6) node[left] {$r_1$};
+  \draw (0,0) circle (1);
+  \draw[thick] (0,0) -- (60:1);
+  \draw (0.35,0) arc (0:60:0.35);
+  \node at (0.55,0.22) {\scriptsize $\theta/2$};
+\end{tikzpicture}
+\end{center}
+So
+\[
+  \ket{\psi} = \cos\Bigl(\frac{\theta}{2}\Bigr)\ket{0} + \underbrace{e^{i(\alpha_1 - \alpha_0)}}_{\text{global phase doesn't matter}}\sin\Bigl(\frac{\theta}{2}\Bigr)\ket{1} .
+\]
+
+\subsection{Expectation values of $\sigma_x$, $\sigma_y$, $\sigma_z$}
+
+\[
+  A = \begin{bmatrix} A_{00} & A_{01} \\ A_{10} & A_{11} \end{bmatrix}, \qquad
+  \ket{\psi} = \begin{pmatrix} c_0 \\ c_1 \end{pmatrix} ,
+\]
+\[
+  \braket{\psi|A|\psi} = A_{00}|c_0|^2 + A_{01}c_0^* c_1 + A_{10}c_0 c_1^* + A_{11}|c_1|^2 .
+\]
+\begin{align*}
+  \sigma_z = \begin{bmatrix} 1 & 0 \\ 0 & -1 \end{bmatrix}
+  &\;\Rightarrow\; \braket{\sigma_z} = |c_0|^2 - |c_1|^2 = \cos^2\Bigl(\frac{\theta}{2}\Bigr) - \sin^2\Bigl(\frac{\theta}{2}\Bigr) , \\[4pt]
+  \sigma_x = \begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix}
+  &\;\Rightarrow\; \braket{\sigma_x} = c_0^* c_1 + c_0 c_1^* = c_0^* c_1 + (c_0^* c_1)^* = 2\Real(c_0^* c_1) ,
+\end{align*}
+\[
+  c_0^* c_1 = \cos\Bigl(\frac{\theta}{2}\Bigr) e^{i\varphi}\sin\Bigl(\frac{\theta}{2}\Bigr)
+            = \frac{e^{i\varphi}}{2}\sin(\theta)
+  \quad\Rightarrow\quad \braket{\sigma_x} = \sin(\theta)\cos(\varphi) .
+\]
+Similarly $\braket{\sigma_y} = 2\Imag(c_0^* c_1) = \sin(\theta)\sin(\varphi)$. So
+\[
+  \boxed{\; \vecb{s} \equiv \bigl(\braket{\sigma_x}, \braket{\sigma_y}, \braket{\sigma_z}\bigr)
+        = \bigl(\sin\theta\cos\varphi,\ \sin\theta\sin\varphi,\ \cos\theta\bigr) \;}
+\]
 
 \end{document}
